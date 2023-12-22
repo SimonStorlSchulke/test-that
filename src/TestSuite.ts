@@ -86,15 +86,25 @@ export class TestSuite {
       return;
     }
 
-    await inits[0]?.fn();
+    await runOperator(inits[0]); // TODO catch exceptions in each block (also below) and catch nicely
 
     // TODO allow running tests in "parallel"
     for (const test of tests) {
-      await beforeEarchs[0]?.fn();
+      await runOperator(beforeEarchs[0]);
       await test.run();
       await afterEachs[0]?.fn();
     }
 
     await afterAlls[0]?.fn();
+  }
+}
+
+async function runOperator(operator: SuiteOperator | null) {
+  if (!operator) return;
+
+  try {
+    await operator.fn()
+  } catch (err) {
+    TestLogger.logError("in", err);
   }
 }

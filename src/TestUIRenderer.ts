@@ -443,10 +443,28 @@ export class TestUIRenderer {
   static drawLog(message: string, level: "info" | "warning" | "error") {
     const div = document.createElement("span");
 
+    div.classList.add("log");
     div.classList.add(level);
     div.innerText = message;
 
     this.testUi?.append(div);
+  }
+
+  static drawError(message: string, error: any, stack: string | undefined) {
+    const div = document.createElement("span");
+
+    div.classList.add("log");
+    div.classList.add("error");
+
+    div.innerHTML = `
+    <span class="test-error-message"><span>ERROR</span>${message}</span>
+    <span class="test-error-error">${error}</span>
+    <span class="test-error-stack">${stack}</span>
+    `
+
+    div.innerText = message + error + stack;
+
+    this.testList.append(div);
   }
 
   private static makeSafeCssClassname(name: string) {

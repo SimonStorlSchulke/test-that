@@ -34,7 +34,17 @@ export class TestLogger {
   static log(message: string, level: "info" | "warning" | "error") {
     coloredLog.yellow(message);
     if (TestLogger.renderHtml) TestUIRenderer.drawLog(message, level);
+  }
 
+  static logError(message: string, error: any) {
+
+    if(error instanceof Error) {
+      console.log("error.stack");
+      console.log(error.stack);
+    }
+
+    coloredLog.red(message);
+    if (TestLogger.renderHtml) TestUIRenderer.drawError(message, error, error.stack);
   }
 
   public static mockCallsToString(mockCalls: mockCall[]) {
