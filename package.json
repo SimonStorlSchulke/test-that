@@ -2,7 +2,7 @@
   "name": "test-that",
   "license": "MIT",
   "private": false,
-  "version": "0.1.8",
+  "version": "0.2.0",
   "type": "module",
   "main": "./dist/test-that.umd.cjs",
   "module": "./dist/test-that.js",
