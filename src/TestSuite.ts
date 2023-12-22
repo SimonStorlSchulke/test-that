@@ -26,13 +26,15 @@ export class TestSuite {
   private getTests(): Test[] {
     const exclusives = this.getExclusiveTests();
     if(exclusives.length > 0 || TestSuiteRegister.hasExclusiveTests) {
+      console.log("exclusives:")
+      console.log(exclusives)
       return exclusives;
     }
     return this.operators.filter(op => op instanceof Test) as Test[];
   }
 
   private getExclusiveTests(): Test[] {
-    return this.operators.filter(op => op instanceof Test && (op as Test).exclusive) as Test[];
+    return this.operators.filter(op => op instanceof Test && op.name?.startsWith("x")) as Test[];
   }
 
   async run(specificTests: string[] = []) {

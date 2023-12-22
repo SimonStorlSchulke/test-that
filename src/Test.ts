@@ -1,6 +1,6 @@
+import { TestSuiteRegister } from ".";
 import { TestLogger } from "./TestLogger";
 import { CurrentTestStatus, TestState } from "./TestState";
-import { TestSuiteRegister } from "./TestSuiteRegister";
 
 type testConfig = {
   cases?: any[];
@@ -34,32 +34,12 @@ export const test = {
   withMeta: (meta: any) => new Test().withMeta(meta),
 };
 
-/** exclusive test - if any test is marked as xtest, only xtests will run. */
-export const xtest = {
-  /** invokes the exclusive test with the given name and function*/
-  that: (name: string, testFunction: Function) =>
-    new Test().setExclusive().that(name, testFunction),
-
-  /** adds testcases (array of anything) to the exclusive test.
-   * The test will run once for each given item. Access the current item by passing it to the function i.e.
-   * test.withCases([1,2,3]).that("checks number", (currentNumber) => {...})*/
-  withCases: (cases: any[]) => new Test().setExclusive().withCases(cases),
-
-  /** the exclusice test will only run, if the provided condition is true */
-  when: (condition: boolean) => new Test().setExclusive().when(condition),
-
-  /** Add any meta information to the exclusive test, that will be logged alongside running it.
-   * If the value is an object and overrides toString, toString will be used. Otherwise JSON.stringify.
-   * @example test.withMeta({storyNumber: 3142}).that("popup opens", ...*/
-  withMeta: (meta: any) => new Test().withMeta(meta),
-};
 
 export class Test {
   private fn?: Function;
   private testConfig: testConfig = {};
   public name?: string;
   public skipped = false;
-  public exclusive = false;
 
   /** adds testcases (array of anything) to the test.
    * The test will run once for each given item. Access the current item by passing it to the function.
@@ -85,16 +65,15 @@ export class Test {
     return this;
   }
 
-  setExclusive() {
-    TestSuiteRegister.hasExclusiveTests = true;
-    this.exclusive = true;
-    return this;
-  }
-
-  /** invokes the test with the given name and function
-   * @example test.that("testname", ()=>{ check(1).equals(1) })
+  /** invokes the test with the given name and function. If the name starts with "x ", the test runs exclusively.
+   * if any test is marked as exclusive test, only those tests will run - this is meant only for in-development purpose.
+   * @example test.that("testname", ()=>{ check(1).equals(1) }) // normal test
+   * @example test.that("x testname", ()=>{ check(1).equals(1) }) // exclusive test
    */
   that(name: string, testFunction: Function) {
+
+    if(name.startsWith("x ")) TestSuiteRegister.hasExclusiveTests = true;
+
     if (!TestState.registerTestName(name)) {
       // add guid if testname already exists - will also warn the user
       name = name + crypto.randomUUID().substring(0, 10);

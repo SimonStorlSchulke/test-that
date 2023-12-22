@@ -68,7 +68,6 @@ export class TestUIRenderer {
       flex-grow: 1;
     }
     .test-window .test-preview {
-      all: initial;
       padding: 10px;
       outline: 3px solid #e9000040;
       outline-offset: -3px;
@@ -280,7 +279,6 @@ export class TestUIRenderer {
     }
     .test-ui .log .test-error-message {
       font-weight: bold;
-      font-size: 1rem;
     }
     .test-ui .log .test-error-error {
       font-weight: bold;
