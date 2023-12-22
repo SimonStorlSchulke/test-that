@@ -105,6 +105,6 @@ async function runOperator(operator: SuiteOperator | null) {
   try {
     await operator.fn()
   } catch (err) {
-    TestLogger.logError("in", err);
+    TestLogger.logError(`in TestSuiteOperator ${operator.identifier}`, err);
   }
 }

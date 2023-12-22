@@ -14,7 +14,8 @@ export class TestUIRenderer {
 
     const styleTag = document.createElement("style");
 
-    styleTag.appendChild(document.createTextNode(`
+    styleTag.appendChild(
+      document.createTextNode(`
     :root {
       --test-success-accent: rgb(7, 136, 48);
       --test-fail-accent: rgb(199, 0, 0);
@@ -50,13 +51,13 @@ export class TestUIRenderer {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       background-color: #1e1e1e;
       padding: 10px 0;
       box-shadow: 3px 3px 12px #00000090;
       line-height: 1.3;
       box-sizing: border-box;
-      width: clamp(500px, 40%, 50%);
+      width: clamp(550px, 40%, 50%);
       position: relative;
       font-family: system-ui;
       pointer-events: all;
@@ -69,7 +70,7 @@ export class TestUIRenderer {
     .test-window .test-preview {
       all: initial;
       padding: 10px;
-      outline: 3px solid red;
+      outline: 3px solid #e9000040;
       outline-offset: -3px;
       flex-grow: 1;
     }
@@ -218,8 +219,12 @@ export class TestUIRenderer {
     .test-ui .failed-check .user-info {
       color: var(--test-user-info);
     }
-    .test-ui .testlog .stack {
-      color: #ffde9bdc;
+    .test-ui .stack {
+      color: #ffe2a9ef;
+    }
+    .test-ui .stack summary:hover {
+      cursor: pointer;
+      color: #fff3dcef;
     }
     .test-ui .hidden {
       display: none;
@@ -259,8 +264,29 @@ export class TestUIRenderer {
     .test-ui .spacer {
       flex-grow: 1;
     }
-    `))
-
+    .test-ui .log {
+      padding-left: 16px;
+      padding-top: 4px;
+      padding-bottom: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: var(--test-fail-bg);
+    }
+    .test-ui .log .test-error-message span {
+      background-color: #af0000;
+      padding: 2px 3px;
+      margin-right: 4px;
+    }
+    .test-ui .log .test-error-message {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    .test-ui .log .test-error-error {
+      font-weight: bold;
+    }
+    `)
+    );
 
     this.testWindow = document.createElement("div");
     document.head.append(styleTag);
@@ -304,7 +330,7 @@ export class TestUIRenderer {
 
     const preview = document.createElement("div");
     preview.classList.add("test-preview");
-    
+
     this.testList = document.createElement("div");
     this.testList.classList.add("test-list");
     this.testWindow.append(preview);
@@ -431,10 +457,14 @@ export class TestUIRenderer {
         <button class="unset">export report</button>`;
 
     div.querySelector("button")!.onclick = () => {
-        var newWindow = window.open();
-        const finalResult = TestState.getRunResult();
-        const report = TestReportRenderer.renderReport(TestState.getFullResult(), finalResult.failed, finalResult.passed);
-        newWindow!.document.write(report.innerHTML);
+      var newWindow = window.open();
+      const finalResult = TestState.getRunResult();
+      const report = TestReportRenderer.renderReport(
+        TestState.getFullResult(),
+        finalResult.failed,
+        finalResult.passed
+      );
+      newWindow!.document.write(report.innerHTML);
     };
 
     this.testUi.append(div);
@@ -453,16 +483,18 @@ export class TestUIRenderer {
   static drawError(message: string, error: any, stack: string | undefined) {
     const div = document.createElement("span");
 
+    div.classList.add("unset");
     div.classList.add("log");
     div.classList.add("error");
 
     div.innerHTML = `
-    <span class="test-error-message"><span>ERROR</span>${message}</span>
-    <span class="test-error-error">${error}</span>
-    <span class="test-error-stack">${stack}</span>
-    `
-
-    div.innerText = message + error + stack;
+    <span class=" unset test-error-message"><span>ERROR</span>${message}</span>
+    <span class=" unset test-error-error">${error}</span>
+    <details class="unset stack">
+    <summary class="unset">stack</summary>
+    ${stack}
+    </details>
+    `;
 
     this.testList.append(div);
   }
