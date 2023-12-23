@@ -1,5 +1,6 @@
 export { TestSuite } from './TestSuite';
 export { TestSuiteRegister } from './TestSuiteRegister';
+export { TestUIRenderer } from './TestUIRenderer';
 export { mock } from './Mock';
 export type { Mock, mockCall } from './Mock';
 export { Test, test } from './Test';

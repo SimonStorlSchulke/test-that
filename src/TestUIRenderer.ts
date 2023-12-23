@@ -72,6 +72,10 @@ export class TestUIRenderer {
       outline: 3px solid #e9000040;
       outline-offset: -3px;
       flex-grow: 1;
+      overflow: auto;
+    }
+    .test-window .test-preview.as-host {
+      pointer-events: all;
     }
     .test-ui button {
       border: none;
@@ -495,6 +499,24 @@ export class TestUIRenderer {
     `;
 
     this.testList.append(div);
+  }
+
+  public static appendPreviewHtml(element: HTMLElement) {
+    const preview = document.querySelector(".test-preview");
+    if (!preview) {
+      console.error("could not find preview window with the css class test-preview on the document");
+      return;
+    }
+    preview.append(element);
+  }
+
+  public static clearPreview() {
+    const preview = document.querySelector(".test-preview");
+    if (!preview) {
+      console.error("could not find preview window with the css class test-preview on the document");
+      return;
+    }
+    preview.innerHTML = "";
   }
 
   private static makeSafeCssClassname(name: string) {

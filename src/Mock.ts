@@ -76,7 +76,7 @@ export const mock = {
 
   implementationWithArgs(
     cases: { args: any[]; implementation: Function }[],
-    defaultImplementation: Function
+    defaultImplementation?: Function
   ): Mock {
     const rf: Mock = (...fnArgs: any[]) => {
       const foundCase = cases.find((_) => arrayEquals(_.args, fnArgs));
@@ -86,12 +86,13 @@ export const mock = {
       if (foundCase) {
         return foundCase.implementation(...foundCase.args);
       }
-      return defaultImplementation();
+      if(defaultImplementation) return defaultImplementation();
     };
     makeMock(rf);
     return rf;
   },
 
+  /** Spy on calls of this function, but keep the original implementation */
   spyOnly(spiedFunction: Function) {
     const rf: Mock = (...fnArgs: any[]) => {
       addCall(rf, { args: fnArgs });
@@ -103,7 +104,7 @@ export const mock = {
 
   returnWithArgs(
     cases: { args: any[]; returnVal: any }[],
-    defaultReturn: any
+    defaultReturn?: any
   ): Mock {
     const rf: Mock = (...fnArgs: any[]) => {
       const foundCase = cases.find((_) => arrayEquals(_.args, fnArgs));
