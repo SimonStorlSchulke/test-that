@@ -26,8 +26,6 @@ export class TestSuite {
   private getTests(): Test[] {
     const exclusives = this.getExclusiveTests();
     if(exclusives.length > 0 || TestSuiteRegister.hasExclusiveTests) {
-      console.log("exclusives:")
-      console.log(exclusives)
       return exclusives;
     }
     return this.operators.filter(op => op instanceof Test) as Test[];
@@ -88,16 +86,15 @@ export class TestSuite {
       return;
     }
 
-    await runOperator(inits[0]); // TODO catch exceptions in each block (also below) and catch nicely
+    await runOperator(inits[0]);
 
-    // TODO allow running tests in "parallel"
     for (const test of tests) {
       await runOperator(beforeEarchs[0]);
       await test.run();
-      await afterEachs[0]?.fn();
+      await runOperator(afterEachs[0]?.fn());
     }
 
-    await afterAlls[0]?.fn();
+    await runOperator(afterAlls[0]?.fn());
   }
 }
 

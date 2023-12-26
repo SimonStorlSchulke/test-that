@@ -1,5 +1,6 @@
 import { TestSuiteRegister } from ".";
 import { TestLogger } from "./TestLogger";
+import { TestRunState } from "./TestRunState";
 import { CurrentTestStatus, TestState } from "./TestState";
 
 type testConfig = {
@@ -85,8 +86,10 @@ export class Test {
   }
 
   public async run() {
-    CurrentTestStatus.testName = this.name ?? "unnamed test";
-    CurrentTestStatus.meta = this.testConfig.meta;
+    CurrentTestStatus.testName = this.name ?? "unnamed test"; //TODO remove
+    TestRunState.currentTest = this.name ?? "unnamed test";
+    CurrentTestStatus.meta = this.testConfig.meta; //TODO this is horroble, delete this
+
 
     if (this.testConfig.cases) {
       for (const testCase of this.testConfig.cases) {
