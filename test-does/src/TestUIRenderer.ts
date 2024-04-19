@@ -311,7 +311,7 @@ export class TestUIRenderer {
     this.testUi.classList.add(this.hidePassed ? "hide-passed" : "show-passed");
     this.testUi.innerHTML = `
         <div class="unset testui-header">
-          <h2>Test that...</h2>
+          <h2>Test does...</h2>
           <div class="unset testui-toggle-passed-wrapper">
             <input type="checkbox" id="test-toggle-passed" name="checkbox" ${
               this.hidePassed ? "checked" : ""
