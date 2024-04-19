@@ -21,17 +21,17 @@ export const test = {
 
   /** adds testcases (array of anything) to the test.
    * The test will run once for each given item. Access the current item by passing it to the function.
-   * @example test.withCases([1,2,3]).that("checks number", (currentNumber) => { check(currentNumber).smaller(1)})*/
+   * @example test.withCases([1,2,3]).does("checks number", (currentNumber) => { check(currentNumber).smaller(1)})*/
   withCases: (cases: any[]) => new Test().withCases(cases),
 
   /** the test will only run, if the provided condition is true
-   * @example test.when(myCondition).that("checks number", (currentNumber) => { //testcode })
+   * @example test.when(myCondition).does("checks number", (currentNumber) => { //testcode })
    */
   when: (condition: boolean) => new Test().when(condition),
 
   /** Add any meta information to the test, that will be logged alongside running it.
    * If the value is an object and overrides toString, toString will be used. Otherwise JSON.stringify.
-   * @example test.withMeta({storyNumber: 3142}).that("popup opens", ...*/
+   * @example test.withMeta({storyNumber: 3142}).does("popup opens", ...*/
   withMeta: (meta: any) => new Test().withMeta(meta),
 };
 
@@ -44,7 +44,7 @@ export class Test {
 
   /** adds testcases (array of anything) to the test.
    * The test will run once for each given item. Access the current item by passing it to the function.
-   * @example test.withCases([1,2,3]).that("checks number", (currentNumber) => { check(currentNumber).smaller(1)})*/
+   * @example test.withCases([1,2,3]).does("checks number", (currentNumber) => { check(currentNumber).smaller(1)})*/
   public withCases(cases: any[]) {
     this.testConfig.cases = cases;
     return this;
@@ -52,14 +52,14 @@ export class Test {
 
   /** Add any meta information to the test, that will be logged alongside running it.
    * If the value is an object and overrides toString, toString will be used. Otherwise JSON.stringify.
-   * @example test.withMeta({storyNumber: 3142}).that("popup opens", ...*/
+   * @example test.withMeta({storyNumber: 3142}).does("popup opens", ...*/
   public withMeta(meta: any) {
     this.testConfig.meta = meta;
     return this;
   }
 
   /** the test will only run, if the provided condition is true
-   * @example test.when(myCondition).that("checks number", (currentNumber) => { //testcode })
+   * @example test.when(myCondition).does("checks number", (currentNumber) => { //testcode })
    */
   public when(condition: boolean): Test {
     if (!condition) this.skipped = true;
