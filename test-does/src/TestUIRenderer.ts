@@ -530,7 +530,7 @@ export class TestUIRenderer {
       console.error("could not find preview window with the css class test-preview on the document");
       return;
     }
-    preview.innerHTML = '<span class="test-preview-message"> test-that preview - use <br> <em>TestUIRenderer.appendPreviewHtml(element)</em> <br> to preview any HTML Element</span>';
+    preview.innerHTML = '<span class="test-preview-message"> test-does preview - use <br> <em>TestUIRenderer.appendPreviewHtml(element)</em> <br> to preview any HTML Element</span>';
   }
 
   private static makeSafeCssClassname(name: string) {

@@ -1,16 +1,16 @@
 {
-  "name": "test-that",
+  "name": "test-does",
   "license": "MIT",
   "private": false,
   "version": "0.2.2",
   "type": "module",
-  "main": "./dist/test-that.umd.cjs",
-  "module": "./dist/test-that.js",
+  "main": "./dist/test-does.umd.cjs",
+  "module": "./dist/test-does.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/test-that.js",
-      "require": "./dist/test-that.umd.cjs"
+      "import": "./dist/test-does.js",
+      "require": "./dist/test-does.umd.cjs"
     }
   },
   "files": [

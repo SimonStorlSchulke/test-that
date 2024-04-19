@@ -1,4 +1,4 @@
-# test-that
+# test-does
 
 A minimal testing library - currently mainly for my own educational purposes.
 

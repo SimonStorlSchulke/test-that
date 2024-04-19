@@ -185,6 +185,32 @@ class Check {
     }
   }
 
+  objectHasEntry(entryName: string) {
+    const failed = !this.toCheck[entryName];
+    if (failed) {
+      TestState.addFailedCheck({
+        userInfo: this.config.info,
+        message: `${this.preamble()} '\n${JSON.stringify(this.toCheck, null, 2)}\n' to have entry with key '${entryName}'`,
+      });
+    }
+  }
+
+
+  mapHasKey(key: any) {
+    const hasKey = (this.toCheck as Map<any, any>).has(key);
+    const failed = !hasKey;
+    if (failed) {
+
+      const keys = Array.from((this.toCheck as Map<any, any>).keys()).join(", ")
+
+      TestState.addFailedCheck({
+        userInfo: this.config.info,
+        message: `${this.preamble()} keys of map '[${keys}]' to include '${key}'`,
+      });
+    }
+  }
+
+
   hasCssClass(className: string) {
 
     if(!this.toCheck) {

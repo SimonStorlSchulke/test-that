@@ -10,14 +10,14 @@ type testConfig = {
 };
 
 /** provides functions to invoke a test
- * @example test.that("testname", ()=>{ check(1).equals(1) })
+ * @example test.does("testname", ()=>{ check(1).equals(1) })
  */
 export const test = {
   /** invokes the test with the given name and function
-   * @example test.that("testname", ()=>{ check(1).equals(1) })
+   * @example test.does("testname", ()=>{ check(1).equals(1) })
    */
-  that: (name: string, testFunction: Function) =>
-    new Test().that(name, testFunction),
+  does: (name: string, testFunction: Function) =>
+    new Test().does(name, testFunction),
 
   /** adds testcases (array of anything) to the test.
    * The test will run once for each given item. Access the current item by passing it to the function.
@@ -68,10 +68,10 @@ export class Test {
 
   /** invokes the test with the given name and function. If the name starts with "x ", the test runs exclusively.
    * if any test is marked as exclusive test, only those tests will run - this is meant only for in-development purpose.
-   * @example test.that("testname", ()=>{ check(1).equals(1) }) // normal test
-   * @example test.that("x testname", ()=>{ check(1).equals(1) }) // exclusive test
+   * @example test.does("testname", ()=>{ check(1).equals(1) }) // normal test
+   * @example test.does("x testname", ()=>{ check(1).equals(1) }) // exclusive test
    */
-  that(name: string, testFunction: Function) {
+  does(name: string, testFunction: Function) {
 
     if(name.startsWith("x ")) TestSuiteRegister.hasExclusiveTests = true;
 
