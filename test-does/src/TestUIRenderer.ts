@@ -517,6 +517,7 @@ export class TestUIRenderer {
 
   public static appendPreviewHtml(element: HTMLElement) {
     const preview = document.querySelector(".test-preview");
+    preview?.querySelector(".test-preview-message")?.remove();
     if (!preview) {
       console.error("could not find preview window with the css class test-preview on the document");
       return;
@@ -524,6 +525,7 @@ export class TestUIRenderer {
     preview.append(element);
   }
 
+  
   public static clearPreview() {
     const preview = document.querySelector(".test-preview");
     if (!preview) {
@@ -532,7 +534,7 @@ export class TestUIRenderer {
     }
     preview.innerHTML = '<span class="test-preview-message"> test-does preview - use <br> <em>TestUIRenderer.appendPreviewHtml(element)</em> <br> to preview any HTML Element</span>';
   }
-
+  
   private static makeSafeCssClassname(name: string) {
     return name.replace(/[^a-z0-9]/g, function (s) {
       var c = s.charCodeAt(0);
@@ -542,3 +544,40 @@ export class TestUIRenderer {
     });
   }
 }
+
+export async function peak(element: HTMLElement, forSeconds: number = 5, backgroundColor = "", customLabel = ""): Promise<void> {
+  TestUIRenderer.appendPreviewHtml(element);
+    
+    const countdown = document.createElement("span");
+
+    const label = customLabel || element.tagName;
+        
+    countdown.innerHTML = `previewing <span style="color: #22aaff;">${label}</span>`;
+    countdown.style.cssText = "position: absolute; bottom: 0px; background: #000; padding: 3px 12px; color: #fff;"
+    
+    TestUIRenderer.appendPreviewHtml(countdown);
+    
+    const previewWindow = document.querySelector<HTMLElement>('.test-preview')!;
+    if (backgroundColor != "") previewWindow.style.backgroundColor = backgroundColor;
+
+    let countdownTimer = forSeconds;
+
+    const timeOutIndex = window.setInterval(() => {
+      countdownTimer -= 0.1;
+      if(countdownTimer > 0) {
+
+        const progress = countdownTimer / forSeconds;
+        countdown.style.background = `linear-gradient(90deg, #004412 ${progress * 100}%, black ${progress * 100}%)`
+        countdown.innerHTML = `previewing <span style="color: #22aaff;">${label}</span>: ${progress.toFixed(2)}s`;
+      } else {
+        TestUIRenderer.clearPreview();
+        clearInterval(timeOutIndex);
+      }
+    }, 100);
+
+    return new Promise((resolve) =>
+      window.setTimeout(() => {
+        resolve();
+      }, forSeconds * 1000)
+    );
+  }

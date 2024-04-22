@@ -48,9 +48,8 @@ export class TestSuite {
 
     TestLogger.logSuiteStart(this.name);
 
-
     const beforeEarchs: SuiteOperator[] = [];
-    const inits: SuiteOperator[] = [];
+    const setups: SuiteOperator[] = [];
     const afterEachs: SuiteOperator[] = [];
     const afterAlls: SuiteOperator[] = [];
 
@@ -60,8 +59,8 @@ export class TestSuite {
       }
       else if ((operator as SuiteOperator).identifier != null) {
         switch (operator.identifier) {
-          case "init":
-            inits.push(operator as SuiteOperator);
+          case "setup":
+            setups.push(operator as SuiteOperator);
             break;
           case "beforeEach":
             beforeEarchs.push(operator as SuiteOperator);
@@ -77,16 +76,16 @@ export class TestSuite {
     }
 
     if (
-      inits.length > 1 ||
+      setups.length > 1 ||
       beforeEarchs.length > 1 ||
       afterEachs.length > 1 ||
       afterAlls.length > 1
     ) {
-      console.log("Define only one SuiteOperator (init, beforeEach). Only the first one will run.");
+      TestLogger.log("Define only one SuiteOperator (setup, beforeEach) per TestSuite. Only the first one will run.", "warning");
       return;
     }
 
-    await runOperator(inits[0]);
+    await runOperator(setups[0]);
 
     for (const test of tests) {
       await runOperator(beforeEarchs[0]);

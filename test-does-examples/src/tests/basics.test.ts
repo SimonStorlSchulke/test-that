@@ -1,14 +1,8 @@
 import { check } from '../../../test-does/src/Checks.ts';
 import { test } from '../../../test-does/src/Test.ts';
 import { TestSuite } from '../../../test-does/src/TestSuite.ts';
-import { beforeEach } from '../../../test-does/src/TestSuiteOperators.ts';
 
 new TestSuite("App component",
-
-  beforeEach(() => {
-
-  }),
-
 
   test.does("Basic Test", () => {
     check(1).equals(1);

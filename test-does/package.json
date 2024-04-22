@@ -2,7 +2,7 @@
   "name": "test-does",
   "license": "MIT",
   "private": false,
-  "version": "0.2.2",
+  "version": "0.3.5",
   "type": "module",
   "main": "./dist/test-does.umd.cjs",
   "module": "./dist/test-does.js",

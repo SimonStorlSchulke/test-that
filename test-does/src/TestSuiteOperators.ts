@@ -1,11 +1,11 @@
 export type SuiteOperator = {
-  identifier: "beforeEach" | "init" | "afterEach" | "afterAll";
+  identifier: "beforeEach" | "setup" | "afterEach" | "afterAll";
   fn: Function;
 };
 
-export function init(fn: Function): SuiteOperator {
+export function setup(fn: Function): SuiteOperator {
   return {
-    identifier: "init",
+    identifier: "setup",
     fn: fn,
   };
 }
