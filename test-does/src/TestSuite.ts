@@ -1,7 +1,7 @@
 import { Test } from "./Test";
 import { SuiteOperator } from "./TestSuiteOperators";
 import { TestLogger } from "./TestLogger";
-import { TestSuiteRegister } from "./TestSuiteRegister";
+import { TestRunner } from "./TestRunner";
 import { CurrentTestStatus, TestState } from "./TestState";
 
 
@@ -20,12 +20,12 @@ export class TestSuite {
 
     this.name = name;
     this.operators = operators ?? [];
-    TestSuiteRegister.add(this);
+    TestRunner.add(this);
   }
 
   private getTests(): Test[] {
     const exclusives = this.getExclusiveTests();
-    if(exclusives.length > 0 || TestSuiteRegister.hasExclusiveTests) {
+    if(exclusives.length > 0 || TestRunner.hasExclusiveTests) {
       return exclusives;
     }
     return this.operators.filter(op => op instanceof Test) as Test[];

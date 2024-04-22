@@ -1,4 +1,4 @@
-import { TestSuiteRegister } from ".";
+import { TestRunner } from ".";
 import { TestLogger } from "./TestLogger";
 import { TestRunState } from "./TestRunState";
 import { CurrentTestStatus, TestState } from "./TestState";
@@ -73,7 +73,7 @@ export class Test {
    */
   does(name: string, testFunction: Function) {
 
-    if(name.startsWith("x ")) TestSuiteRegister.hasExclusiveTests = true;
+    if(name.startsWith("x ")) TestRunner.hasExclusiveTests = true;
 
     if (!TestState.registerTestName(name)) {
       // add guid if testname already exists - will also warn the user

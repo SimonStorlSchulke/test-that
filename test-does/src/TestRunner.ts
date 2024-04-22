@@ -2,9 +2,10 @@ import { TestLogger } from "./TestLogger";
 import { TestState } from "./TestState";
 import { TestSuite } from "./TestSuite";
 
-export class TestSuiteRegister {
+export class TestRunner {
   private static suites: TestSuite[] = [];
   public static hasExclusiveTests = false;
+  private static setupFunction = () => {}
 
   static add(suite: TestSuite) {
     this.suites.push(suite);
@@ -12,11 +13,17 @@ export class TestSuiteRegister {
 
   static reset() {
     TestState.resetRun();
+    this.setupFunction();
     TestLogger.reset();
+  }
+  
+  /** The function provided here will run before a testrun is started */
+  public static setup(setupFunction: () => void) {
+    this.setupFunction = setupFunction;
   }
 
   static async runAll() {
-    TestSuiteRegister.reset();
+    TestRunner.reset();
     for (const suite of this.suites) {
       await suite.run();
     }
@@ -24,7 +31,7 @@ export class TestSuiteRegister {
   }
 
   static async runSpecificTests(tests: { suite: string; tests: string[] }[]) {
-    TestSuiteRegister.reset();
+    TestRunner.reset();
 
     for (const testRun of tests) {
       const matchingSuite = this.suites.filter(
@@ -38,7 +45,7 @@ export class TestSuiteRegister {
   }
 
   static async runSpecificSuites(suiteNames: string[]) {
-    TestSuiteRegister.reset();
+    TestRunner.reset();
 
     const foundSuites = this.suites.filter((_) => suiteNames.includes(_.name));
 
@@ -54,13 +61,13 @@ export class TestSuiteRegister {
 
 (window as any).testrunner = {
   runAll: () => {
-    TestSuiteRegister.runAll();
+    TestRunner.runAll();
   },
   runSpecificTests: (tests: { suite: string; tests: string[] }[]) => {
-    TestSuiteRegister.runSpecificTests(tests);
+    TestRunner.runSpecificTests(tests);
   },
   runSpecificSuites: (suiteName: string[]) => {
-    TestSuiteRegister.runSpecificSuites(suiteName);
+    TestRunner.runSpecificSuites(suiteName);
   },
 };
 
@@ -68,7 +75,7 @@ let first_press = false;
 
 function KeyPress(e: KeyboardEvent) {
   if(first_press) {
-    if (e.key == "t") TestSuiteRegister.runAll();
+    if (e.key == "t") TestRunner.runAll();
   } else {
     first_press = true;
     window.setTimeout(function() { first_press = false; }, 250);

@@ -1,5 +1,5 @@
 export { TestSuite } from './TestSuite';
-export { TestSuiteRegister } from './TestSuiteRegister';
+export { TestRunner } from './TestRunner';
 export { TestUIRenderer, peak } from './TestUIRenderer';
 export { mock } from './Mock';
 export type { Mock, mockCall } from './Mock';

@@ -1,8 +1,12 @@
 import { arrayEquals, mockCall } from "./Mock";
 import { TestLogger } from "./TestLogger";
 import { TestState } from "./TestState";
+import equal from "fast-deep-equal";
 
-// TODO add convenient way to define custom checks
+
+export function check(toCheck: any = null) {
+  return new Check(toCheck);
+}
 
 class Check {
   toCheck?: any;
@@ -27,30 +31,30 @@ class Check {
     return this;
   }
 
-  equals(expected: any) {
-    const failed = (this.toCheck !== expected) !== this.config.invert;
-
-    if (failed) {
+  custom(customCheckKey: string, ...args: any[]) {
+    const check = customChecks.get(customCheckKey);
+    if(!check) {
+      TestLogger.log(`custom check with key '${customCheckKey}' doesn't exist`, "error");
+      return;
+    }
+    const checkResult = check(this.toCheck, args);
+    if (!checkResult.success) {
       TestState.addFailedCheck({
         userInfo: this.config.info,
-        message: `${this.preamble()} '${
-          this.toCheck
-        }: ${typeof this.toCheck}' to equal '${expected}: ${typeof expected}'`,
+        message: checkResult.failMessage,
       });
     }
   }
 
-  equalsObject(expected: object) {
-    const obJsonToCheck = JSON.stringify(this.toCheck);
-    const obJsonExpected = JSON.stringify(expected);
-    const failed = (obJsonToCheck !== obJsonExpected) !== this.config.invert;
+  equals(expected: any) {
+    const failed = !equal(this.toCheck, expected)
 
     if (failed) {
       TestState.addFailedCheck({
         userInfo: this.config.info,
         message: `${this.preamble()} '${
-          this.toCheck
-        }: ${typeof this.toCheck}' to equal '${expected}: ${typeof expected}'`,
+          JSON.stringify(this.toCheck)
+        }': ${typeof this.toCheck}' to equal '${JSON.stringify(expected)}': ${typeof expected}'`,
       });
     }
   }
@@ -303,6 +307,18 @@ class Check {
   }
 }
 
-export function check(toCheck: any = null) {
-  return new Check(toCheck);
+type CustomCheckFunction = (toCkeck: any, args: any[]) => customCheckResult;
+
+type customCheckResult = {
+  success: boolean,
+  failMessage: string,
+}
+
+const customChecks = new Map<string, CustomCheckFunction>();
+
+export function registerCustomCheck(key: string, checkFunction: (toCheck: any, ...args: any[]) => customCheckResult) {
+  if(customChecks.has(key)) {
+    TestLogger.log(`custom check with key '${key}' is already registered`, "error");
+  }
+  customChecks.set(key, checkFunction);
 }
