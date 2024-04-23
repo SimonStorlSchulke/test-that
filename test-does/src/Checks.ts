@@ -32,7 +32,7 @@ class Check {
   }
 
   custom(customCheckKey: string, ...args: any[]) {
-    const check = customChecks.get(customCheckKey);
+    const check = TestState.customChecks.get(customCheckKey);
     if(!check) {
       TestLogger.log(`custom check with key '${customCheckKey}' doesn't exist`, "error");
       return;
@@ -307,18 +307,5 @@ class Check {
   }
 }
 
-type CustomCheckFunction = (toCkeck: any, args: any[]) => customCheckResult;
 
-type customCheckResult = {
-  success: boolean,
-  failMessage: string,
-}
 
-const customChecks = new Map<string, CustomCheckFunction>();
-
-export function registerCustomCheck(key: string, checkFunction: (toCheck: any, ...args: any[]) => customCheckResult) {
-  if(customChecks.has(key)) {
-    TestLogger.log(`custom check with key '${key}' is already registered`, "error");
-  }
-  customChecks.set(key, checkFunction);
-}

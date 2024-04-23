@@ -1,0 +1,18 @@
+@use "../../../assets/colors";
+
+:host {
+    background-color: #3b3741;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.178);
+    display: flex;
+    flex-direction: column;
+
+    a {
+        padding: 12px 12px;
+        color: #cacaca;
+        text-decoration: none;
+
+        &.active {
+            background-color: colors.$accent-2;
+        }
+    }
+}

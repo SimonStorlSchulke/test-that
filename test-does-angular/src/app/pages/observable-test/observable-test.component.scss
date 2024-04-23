@@ -1,0 +1,14 @@
+@use "../../../assets/colors.scss" as colors;
+
+.user {
+    display: flex;
+    padding-bottom: 16px;
+    gap: 12px;
+
+    img {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        outline: 3.3px solid colors.$accent-2;
+    }
+}

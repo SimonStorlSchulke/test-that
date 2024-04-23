@@ -6,4 +6,4 @@ export type { Mock, mockCall } from './Mock';
 export { Test, test } from './Test';
 export { check } from "./Checks";
 export { setup, beforeEach, afterAll, afterEach } from "./TestSuiteOperators";
-export type { SuiteOperator } from "./TestSuiteOperators";
+export type { TestSuiteOperator as SuiteOperator } from "./TestSuiteOperators";

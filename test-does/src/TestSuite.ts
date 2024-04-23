@@ -1,5 +1,5 @@
 import { Test } from "./Test";
-import { SuiteOperator } from "./TestSuiteOperators";
+import { TestSuiteOperator } from "./TestSuiteOperators";
 import { TestLogger } from "./TestLogger";
 import { TestRunner } from "./TestRunner";
 import { CurrentTestStatus, TestState } from "./TestState";
@@ -7,14 +7,14 @@ import { CurrentTestStatus, TestState } from "./TestState";
 
 export class TestSuite {
   name: string;
-  operators: (Test | SuiteOperator)[];
+  operators: (Test | TestSuiteOperator)[];
 
   result = {
     passed: 0,
     failed: 0,
   };
 
-  constructor(name: string, ...operators: (Test | SuiteOperator)[]) {
+  constructor(name: string, ...operators: (Test | TestSuiteOperator)[]) {
 
     TestState.registerSuiteName(name);
 
@@ -48,28 +48,28 @@ export class TestSuite {
 
     TestLogger.logSuiteStart(this.name);
 
-    const beforeEarchs: SuiteOperator[] = [];
-    const setups: SuiteOperator[] = [];
-    const afterEachs: SuiteOperator[] = [];
-    const afterAlls: SuiteOperator[] = [];
+    const beforeEarchs: TestSuiteOperator[] = [];
+    const setups: TestSuiteOperator[] = [];
+    const afterEachs: TestSuiteOperator[] = [];
+    const afterAlls: TestSuiteOperator[] = [];
 
     for (const operator of this.operators) {
       if (operator instanceof Test) {
         continue;
       }
-      else if ((operator as SuiteOperator).identifier != null) {
+      else if ((operator as TestSuiteOperator).identifier != null) {
         switch (operator.identifier) {
           case "setup":
-            setups.push(operator as SuiteOperator);
+            setups.push(operator as TestSuiteOperator);
             break;
           case "beforeEach":
-            beforeEarchs.push(operator as SuiteOperator);
+            beforeEarchs.push(operator as TestSuiteOperator);
             break;
           case "afterEach":
-            afterEachs.push(operator as SuiteOperator);
+            afterEachs.push(operator as TestSuiteOperator);
             break;
           case "afterAll":
-            afterAlls.push(operator as SuiteOperator);
+            afterAlls.push(operator as TestSuiteOperator);
             break;
         }
       }
@@ -97,7 +97,7 @@ export class TestSuite {
   }
 }
 
-async function runOperator(operator: SuiteOperator | null) {
+async function runOperator(operator: TestSuiteOperator | null) {
   if (!operator) return;
 
   try {

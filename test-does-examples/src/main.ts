@@ -6,10 +6,8 @@ import "./tests/spies.test.ts";
 import "./tests/custom-checks.test";
 import { addCustomChecks } from "./custom-checks.ts";
 
-
 TestRunner.setup(() => {
   addCustomChecks();
 });
-
 
 TestRunner.runAll();

@@ -1,0 +1,16 @@
+<h1>Fetching TestJson from https://reqres.in/api/users</h1>
+
+<h2>Users</h2>
+@if (users$ | async; as users) {
+    @for (user of users; track user.id) {
+        <div class="user">
+            <img [src]="user.avatar">
+            <div class="flex v gap-4 justify-center">
+                <b testId="user-name">{{user.first_name}} {{user.last_name}}</b>
+                <span class="text-muted">{{user.email}}</span>
+            </div>
+        </div>
+    }
+}
+
+<p testId="total-users">Total users: {{userNumber$ | async}}</p>

@@ -18,6 +18,14 @@ export type SuiteResult = {
   testResults: Map<string, TestResult>;
 };
 
+
+type CustomCheckFunction = (toCkeck: any, args: any[]) => customCheckResult;
+
+type customCheckResult = {
+  success: boolean,
+  failMessage: string,
+}
+
 export let CurrentTestStatus = {
   suiteName: "",
   testName: "",
@@ -29,6 +37,8 @@ export class TestState {
 
   private static existingTestNames: string[] = [];
   private static existingSuiteNames: string[] = [];
+  public static customChecks = new Map<string, CustomCheckFunction>();
+
 
   static resetRun() {
     this.suiteResults = new Map();
@@ -156,4 +166,11 @@ export class TestState {
   public static getFullResult() {
     return this.suiteResults;
   }
+}
+
+export function registerCustomCheck(key: string, checkFunction: (toCheck: any, ...args: any[]) => customCheckResult) {
+  if(TestState.customChecks.has(key)) {
+    TestLogger.log(`custom check with key '${key}' is already registered`, "error");
+  }
+  TestState.customChecks.set(key, checkFunction);
 }
