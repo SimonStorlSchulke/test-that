@@ -10,28 +10,28 @@ type testConfig = {
 };
 
 /** provides functions to invoke a test
- * @example test.does("testname", ()=>{ check(1).equals(1) })
+ * @example test.that("testname", ()=>{ check(1).equals(1) })
  */
 export const test = {
   /** invokes the test with the given name and function
-   * @example test.does("testname", ()=>{ check(1).equals(1) })
+   * @example test.that("testname", ()=>{ check(1).equals(1) })
    */
-  does: (name: string, testFunction: Function) =>
-    new Test().does(name, testFunction),
+  that: (name: string, testFunction: Function) =>
+    new Test().that(name, testFunction),
 
   /** adds testcases (array of anything) to the test.
    * The test will run once for each given item. Access the current item by passing it to the function.
-   * @example test.withCases([1,2,3]).does("checks number", (currentNumber) => { check(currentNumber).smaller(1)})*/
+   * @example test.withCases([1,2,3]).that("checks number", (currentNumber) => { check(currentNumber).smaller(1)})*/
   withCases: (cases: any[]) => new Test().withCases(cases),
 
   /** the test will only run, if the provided condition is true
-   * @example test.when(myCondition).does("checks number", (currentNumber) => { //testcode })
+   * @example test.when(myCondition).that("checks number", (currentNumber) => { //testcode })
    */
   when: (condition: boolean) => new Test().when(condition),
 
   /** Add any meta information to the test, that will be logged alongside running it.
    * If the value is an object and overrides toString, toString will be used. Otherwise JSON.stringify.
-   * @example test.withMeta({storyNumber: 3142}).does("popup opens", ...*/
+   * @example test.withMeta({storyNumber: 3142}).that("popup opens", ...*/
   withMeta: (meta: any) => new Test().withMeta(meta),
 };
 
@@ -44,7 +44,7 @@ export class Test {
 
   /** adds testcases (array of anything) to the test.
    * The test will run once for each given item. Access the current item by passing it to the function.
-   * @example test.withCases([1,2,3]).does("checks number", (currentNumber) => { check(currentNumber).smaller(1)})*/
+   * @example test.withCases([1,2,3]).that("checks number", (currentNumber) => { check(currentNumber).smaller(1)})*/
   public withCases(cases: any[]) {
     this.testConfig.cases = cases;
     return this;
@@ -52,14 +52,14 @@ export class Test {
 
   /** Add any meta information to the test, that will be logged alongside running it.
    * If the value is an object and overrides toString, toString will be used. Otherwise JSON.stringify.
-   * @example test.withMeta({storyNumber: 3142}).does("popup opens", ...*/
+   * @example test.withMeta({storyNumber: 3142}).that("popup opens", ...*/
   public withMeta(meta: any) {
     this.testConfig.meta = meta;
     return this;
   }
 
   /** the test will only run, if the provided condition is true
-   * @example test.when(myCondition).does("checks number", (currentNumber) => { //testcode })
+   * @example test.when(myCondition).that("checks number", (currentNumber) => { //testcode })
    */
   public when(condition: boolean): Test {
     if (!condition) this.skipped = true;
@@ -68,10 +68,10 @@ export class Test {
 
   /** invokes the test with the given name and function. If the name starts with "x ", the test runs exclusively.
    * if any test is marked as exclusive test, only those tests will run - this is meant only for in-development purpose.
-   * @example test.does("testname", ()=>{ check(1).equals(1) }) // normal test
-   * @example test.does("x testname", ()=>{ check(1).equals(1) }) // exclusive test
+   * @example test.that("testname", ()=>{ check(1).equals(1) }) // normal test
+   * @example test.that("x testname", ()=>{ check(1).equals(1) }) // exclusive test
    */
-  does(name: string, testFunction: Function) {
+  that(name: string, testFunction: Function) {
 
     if(name.startsWith("x ")) TestRunner.hasExclusiveTests = true;
 

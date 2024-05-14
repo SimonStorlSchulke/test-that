@@ -38,6 +38,16 @@ export const mock = {
     return rf as Mock;
   },
 
+  /** Use void if the mocked function returns nothing or if your tested object doesn't use about its returned value. */
+  void() {
+    const rf: Mock = (...fnArgs: any[]) => {
+      addCall(rf, { args: fnArgs });
+    };
+    makeMock(rf);
+    return rf as Mock;
+  },
+
+
   value(value: any) {
     return value as Mock;
   },

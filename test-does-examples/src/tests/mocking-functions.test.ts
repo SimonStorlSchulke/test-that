@@ -18,14 +18,14 @@ new TestSuite(
         console.log("I run before each test");
     }),
 
-    test.does("test mocking functions", () => {
+    test.that("test mocking functions", () => {
         (mockedFunction as Mock) = mock.returnValue(12);
 
         check(add(31, 24)).equals(12);
 
         (mockedFunction as Mock) = mock.implementation(() => 4);
 
-        check(add(1, 2)).withInfo("deliberately fail").equals(3);
+        check(add(1, 2)).withInfo("intentional fail").equals(3);
 
         (mockedFunction as Mock) = mock.returnWithArgs([
             { args: [6, 3], returnVal: 212 },

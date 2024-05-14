@@ -27,7 +27,7 @@ class Check {
   }
 
   public get not(): Check {
-    this.config.invert = true;
+    this.config.invert = !this.config.invert;
     return this;
   }
 
@@ -38,16 +38,17 @@ class Check {
       return;
     }
     const checkResult = check(this.toCheck, args);
-    if (!checkResult.success) {
+    const failed = !checkResult.success !== this.config.invert
+    if (failed) {
       TestState.addFailedCheck({
         userInfo: this.config.info,
-        message: checkResult.failMessage,
+        message: `${this.preamble()} ${checkResult.failMessage}`,
       });
     }
   }
 
   equals(expected: any) {
-    const failed = !equal(this.toCheck, expected)
+    const failed = !equal(this.toCheck, expected) !== this.config.invert;
 
     if (failed) {
       TestState.addFailedCheck({
@@ -260,11 +261,9 @@ class Check {
     }
   }
 
-  calledWithArgs(args: any[]) {
+  calledWith(args: any[]) {
+    if (!this.toCheckIsMock()) return;
     
-    if (!this.toCheckIsMock()) {
-      return;
-    }
 
     if (!this.toCheck.calls) {
       const failed = true !== this.config.invert;

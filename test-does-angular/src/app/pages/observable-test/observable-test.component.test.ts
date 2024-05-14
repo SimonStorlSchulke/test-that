@@ -14,7 +14,7 @@ new TestSuite(
     fixture = await testFixture(ObservableTestComponent);
   }),
 
-  test.does('Users get fetched and displayed', async () => {
+  test.that('Users get fetched and displayed', async () => {
 
     (fixture.componentInstance.http.get as Mock) = mock.returnWithArgs([
       {args: ["https://reqres.in/api/users"], returnVal: of({

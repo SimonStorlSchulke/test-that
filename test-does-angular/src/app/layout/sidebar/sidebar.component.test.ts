@@ -19,7 +19,7 @@ new TestSuite(
     await fixture.peak();
   }),
   
-  test.does('navigates to documentation', () => {
+  test.that('navigates to documentation', () => {
     check(
       fixture.debugElement.query(By.css('.documentation')).nativeElement.href
     ).stringIncludes('/documentation');

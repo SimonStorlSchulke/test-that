@@ -2,7 +2,7 @@ import { Mock, mock } from '../../../test-does/src/index.ts';
 import { check } from '../../../test-does/src/Checks.ts';
 import { test } from '../../../test-does/src/Test.ts';
 import { TestSuite } from '../../../test-does/src/TestSuite.ts';
-import { beforeEach, setup } from '../../../test-does/src/TestSuiteOperators.ts';
+import { beforeEach } from '../../../test-does/src/TestSuiteOperators.ts';
 
 function spiedFunction(a: number, b: number) {
     return a + b;
@@ -21,7 +21,7 @@ new TestSuite(
         (spiedFunction as Mock) = mock.implementation(originalImplementaion);
     }),
     
-    test.does("Spying on function while keeping the implementation", () => {
+    test.that("Spying on function while keeping the implementation", () => {
         (spiedFunction as Mock) = mock.spyOnly(spiedFunction);
 
         spiedFunction(1,2);
@@ -31,11 +31,7 @@ new TestSuite(
         
         spiedFunction(4,4);
         
-        check(spiedFunction).calledWithArgs([4,4]);
+        check(spiedFunction).calledWith([4,4]);
     }),
-
-    test.does("", () => {
-
-    })
 )
 
