@@ -1,0 +1,31 @@
+{
+  "name": "checkeroni",
+  "license": "MIT",
+  "private": false,
+  "version": "1.0.1",
+  "type": "module",
+  "main": "./dist/checkeroni.umd.cjs",
+  "module": "./dist/checkeroni.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/checkeroni.js",
+      "require": "./dist/checkeroni.umd.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && vite build"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8",
+    "vite-plugin-dts": "^3.6.4"
+  },
+  "dependencies": {
+    "fast-deep-equal": "^3.1.3"
+  }
+}
